@@ -37,7 +37,7 @@ export default function TourCampaignHero() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // Rapid dynamic slide transition: less than 1 second per slide (800ms)
+    // Dynamic rapid slide transition: 800ms per slide
     timerRef.current = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slideCount);
     }, 800);
@@ -55,8 +55,8 @@ export default function TourCampaignHero() {
   };
 
   return (
-    <section className="tour-hero-section tour-slider-hero clean-hero-section" id="hero">
-      {/* Background Rapid Slides */}
+    <section className="tour-hero-section tour-slider-hero" id="hero">
+      {/* Background Rapid Slides (< 1s per slide) */}
       <div className="tour-hero-backdrop">
         {heroSlides.map((s, idx) => (
           <div
@@ -77,40 +77,47 @@ export default function TourCampaignHero() {
       </div>
 
       <div className="tour-container tour-hero-inner">
-        {/* Minimal, Uncluttered Clean Hero Content */}
-        <div className="clean-hero-content">
-          <h1 className="clean-hero-headline">
-            Find your perfect<br />
-            holiday escape.
+        {/* Restored Original High-Converting Copy */}
+        <div className="tour-hero-content anim-reveal-hero">
+          
+          <div className="tour-eyebrow-pill">
+            <span className="tour-blue-dot"></span>
+            Exclusive 2026 Holiday Departures
+          </div>
+
+          <h1 className="tour-hero-title">
+            Two Destinations.<br />
+            <span className="tour-title-soft">One Extraordinary Escape.</span>
           </h1>
 
-          <p className="clean-hero-subline">
-            All-inclusive 2026 holiday packages curated by Rhordway.
+          <p className="tour-hero-lead">
+            From Doha's striking geometric skyline to Zanzibar's turquoise coral shores, discover two unforgettable luxury journeys curated by Rhordway.
           </p>
 
-          <div className="clean-hero-btn-row">
+          <div className="tour-hero-cta-group">
             <button 
               type="button" 
-              className="clean-pill-btn"
+              className="tour-btn-primary"
               onClick={() => scrollTo('experiences')}
             >
-              <span>Explore Offers</span>
-              <span className="clean-pill-arrow">↓</span>
+              <span>Explore the Experiences</span>
+              <span className="tour-btn-circle" aria-hidden="true">↓</span>
             </button>
 
             <a 
-              href={`https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent('Hello Rhordway, I would like to enquire about your 2026 Holiday Tours (Doha + Zanzibar / Doha Grand Prix).')}`}
-              className="clean-pill-btn-glass"
+              href={`https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent('Hello Rhordway, I am interested in reserving a slot for your 2026 Holiday Tours (Doha + Zanzibar / Doha Grand Prix). Please provide more details.')}`}
+              className="tour-btn-glass"
               target="_blank" 
               rel="noopener noreferrer"
             >
-              <span>Chat on WhatsApp</span>
-              <span className="clean-pill-arrow">↗</span>
+              <span>Speak to a Travel Consultant</span>
+              <span className="tour-btn-circle" aria-hidden="true">↗</span>
             </a>
           </div>
+
         </div>
 
-        {/* Minimal Progress Dots */}
+        {/* Minimal Slide Dots Indicator */}
         <div className="clean-hero-dots">
           {heroSlides.map((_, idx) => (
             <span
