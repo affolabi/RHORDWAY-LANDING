@@ -18,150 +18,153 @@ export default function TourExperienceSelector({ onSelectPackage }: TourExperien
     }
   };
 
+  const tourCards = [
+    {
+      id: 'doha-zanzibar',
+      title: 'Doha + Zanzibar',
+      price: '₦4,350,000 / per person',
+      tag: '7 Nights · Dec 12–19',
+      image: '/assets/images/zanzibar-beach.jpg',
+      alt: 'Zanzibar turquoise beach luxury resort'
+    },
+    {
+      id: 'doha-grand-prix',
+      title: 'Doha Grand Prix',
+      price: '₦3,400,000 / double',
+      tag: '6 Nights · Nov 25 – Dec 1',
+      image: '/assets/images/doha-f1-grand-prix.jpg',
+      alt: 'Formula 1 Lusail Circuit race under floodlights'
+    },
+    {
+      id: 'doha-desert',
+      title: 'Desert Dune Safari',
+      price: 'Included in Doha Packages',
+      tag: 'Inland Sea Private Safari',
+      image: '/assets/images/doha-desert-safari.jpg',
+      alt: 'Arabian desert dunes at sunset'
+    },
+    {
+      id: 'zanzibar-mnemba',
+      title: 'Mnemba Coral Atoll',
+      price: 'Included in Zanzibar Package',
+      tag: 'Private Dolphin Cruise',
+      image: '/assets/images/zanzibar-mnemba.jpg',
+      alt: 'Crystal turquoise water at Mnemba Island'
+    }
+  ];
+
   return (
-    <section className="tour-section" id="experiences">
-      <div className="tour-container">
-        
-        {/* Section Header */}
-        <div className="tour-section-header text-center anim-reveal-text">
-          <div className="tour-eyebrow-pill center-pill">
-            <span className="tour-blue-dot"></span>
-            Curated 2026 Departures
-          </div>
-          <h2 className="tour-section-heading">
-            Choose Your Unforgettable 2026 Journey<span style={{ color: '#0080E8' }}>.</span>
-          </h2>
-          <p className="tour-section-subheading">
-            Two distinct holiday concepts designed for travellers who appreciate architectural wonder, tropical island serenity, or high-speed motorsport prestige.
-          </p>
-        </div>
-
-        {/* 2-Item Premium Layout */}
-        <div className="tour-duo-grid">
+    <div className="clean-curated-container" id="experiences">
+      {/* ----------------------------------------------------------------------
+          SECTION 1: OUR TOURS (Matches Reference Layout)
+          ---------------------------------------------------------------------- */}
+      <section className="clean-section">
+        <div className="clean-inner">
           
-          {/* Card 1: Doha + Zanzibar */}
-          <article className="tour-duo-card anim-reveal-text">
-            <div className="tour-duo-media">
-              <img 
-                src="/assets/images/zanzibar-beach.jpg" 
-                alt="Zanzibar Beach and coastal luxury resort — Rhordway holiday package" 
-                loading="lazy" 
-              />
-              <div className="tour-duo-scrim"></div>
-              <div className="tour-duo-badge-floating">
-                <span>{pkgDZ.dates}</span>
-                <span className="bullet">·</span>
-                <span>{pkgDZ.durationLabel}</span>
-              </div>
+          {/* Header Row */}
+          <div className="clean-header-row">
+            <div>
+              <span className="clean-tag">Our Tours</span>
+              <h2 className="clean-title">
+                Find your perfect<br />
+                holiday experience
+              </h2>
             </div>
 
-            <div className="tour-duo-content">
-              <div className="tour-duo-top">
-                <span className="tour-duo-kicker">DUAL ESCAPE · QATAR &amp; TANZANIA</span>
-                <h3 className="tour-duo-title">{pkgDZ.title}</h3>
-                <p className="tour-duo-summary">{pkgDZ.overviewDescription}</p>
-              </div>
+            <button 
+              type="button" 
+              className="clean-pill-btn"
+              onClick={() => scrollTo('booking-desk')}
+            >
+              <span>See All Tours</span>
+              <span className="clean-pill-arrow">↗</span>
+            </button>
+          </div>
 
-              <div className="tour-duo-inclusions-preview">
-                <div className="inc-pill">✓ 5-Star Doha Hotel &amp; Daily Breakfast</div>
-                <div className="inc-pill">✓ All-Inclusive Zanzibar Beach Resort</div>
-                <div className="inc-pill">✓ Qatar Airways Flights &amp; Private Transfers</div>
-                <div className="inc-pill">✓ Qatar &amp; Tanzania Visas + Insurance</div>
-              </div>
+          {/* 4 Cards Grid (Exact Reference Look) */}
+          <div className="clean-cards-grid">
+            {tourCards.map((tour) => (
+              <article
+                key={tour.id}
+                className="clean-tour-card"
+                onClick={() => {
+                  if (tour.id === 'doha-zanzibar' || tour.id === 'doha-grand-prix') {
+                    if (onSelectPackage) onSelectPackage(tour.id);
+                    scrollTo(tour.id);
+                  } else if (tour.id === 'doha-desert') {
+                    if (onSelectPackage) onSelectPackage('doha-grand-prix');
+                    scrollTo('doha-grand-prix');
+                  } else {
+                    if (onSelectPackage) onSelectPackage('doha-zanzibar');
+                    scrollTo('doha-zanzibar');
+                  }
+                }}
+              >
+                <div className="clean-card-image-wrap">
+                  <img src={tour.image} alt={tour.alt} loading="lazy" />
+                  <div className="clean-card-gradient"></div>
+                  
+                  {/* Floating Circular Arrow */}
+                  <span className="clean-card-floating-arrow" aria-hidden="true">
+                    ↗
+                  </span>
 
-              <div className="tour-duo-price-block">
-                <div>
-                  <span className="price-label">All-Inclusive Package Rate</span>
-                  <div className="price-number">{pkgDZ.pricing.standardFormatted}</div>
-                  <span className="price-terms">{pkgDZ.pricing.occupancyTerms}</span>
+                  {/* Card Bottom Content */}
+                  <div className="clean-card-bottom">
+                    <h3 className="clean-card-title">{tour.title}</h3>
+                    <p className="clean-card-price">{tour.price}</p>
+                  </div>
                 </div>
-
-                <div className="tour-duo-actions">
-                  <button 
-                    type="button" 
-                    className="tour-duo-view-btn"
-                    onClick={() => scrollTo('doha-zanzibar')}
-                  >
-                    View Itinerary ↗
-                  </button>
-                  <button 
-                    type="button" 
-                    className="tour-duo-reserve-btn"
-                    onClick={() => {
-                      if (onSelectPackage) onSelectPackage('doha-zanzibar');
-                      scrollTo('booking-collation');
-                    }}
-                  >
-                    Reserve Slot
-                  </button>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          {/* Card 2: Doha Grand Prix */}
-          <article className="tour-duo-card anim-reveal-text anim-delay-1">
-            <div className="tour-duo-media">
-              <img 
-                src="/assets/images/doha-f1-grand-prix.jpg" 
-                alt="Formula 1 Qatar Airways Qatar Grand Prix at Lusail International Circuit — Rhordway" 
-                loading="lazy" 
-              />
-              <div className="tour-duo-scrim"></div>
-              <div className="tour-duo-badge-floating f1-badge">
-                <span>{pkgGP.dates}</span>
-                <span className="bullet">·</span>
-                <span>{pkgGP.durationLabel}</span>
-              </div>
-            </div>
-
-            <div className="tour-duo-content">
-              <div className="tour-duo-top">
-                <span className="tour-duo-kicker">MOTORSPORT LUXURY · LUSAIL CIRCUIT</span>
-                <h3 className="tour-duo-title">{pkgGP.title}</h3>
-                <p className="tour-duo-summary">{pkgGP.overviewDescription}</p>
-              </div>
-
-              <div className="tour-duo-inclusions-preview">
-                <div className="inc-pill">✓ 3-Day Formula 1 Lusail Circuit Weekend</div>
-                <div className="inc-pill">✓ 6 Nights at 5-Star Doha Luxury Hotel</div>
-                <div className="inc-pill">✓ Return Flights &amp; Qatar Tourist Visa</div>
-                <div className="inc-pill">✓ 4x4 Desert Safari &amp; Inland Sea Excursion</div>
-              </div>
-
-              <div className="tour-duo-price-block">
-                <div>
-                  <span className="price-label">Starting Package Rate</span>
-                  <div className="price-number">From {pkgGP.pricing.standardFormatted}</div>
-                  <span className="price-terms">Double Occupancy (Single: ₦4,150,000)</span>
-                </div>
-
-                <div className="tour-duo-actions">
-                  <button 
-                    type="button" 
-                    className="tour-duo-view-btn"
-                    onClick={() => scrollTo('doha-grand-prix')}
-                  >
-                    View Weekend ↗
-                  </button>
-                  <button 
-                    type="button" 
-                    className="tour-duo-reserve-btn"
-                    onClick={() => {
-                      if (onSelectPackage) onSelectPackage('doha-grand-prix');
-                      scrollTo('booking-collation');
-                    }}
-                  >
-                    Reserve Slot
-                  </button>
-                </div>
-              </div>
-            </div>
-          </article>
+              </article>
+            ))}
+          </div>
 
         </div>
+      </section>
 
-      </div>
-    </section>
+      {/* ----------------------------------------------------------------------
+          SECTION 2: EXPERIENCE / PHILOSOPHY (Matches Reference Layout)
+          ---------------------------------------------------------------------- */}
+      <section className="clean-section clean-experience-section">
+        <div className="clean-inner">
+          
+          <span className="clean-tag">Experience</span>
+          
+          <h2 className="clean-statement">
+            With a love for luxury and seamless exploration, we create meaningful holiday journeys that inspire, connect, and stay forever in memory.
+          </h2>
+
+          {/* 3 Landscape Images */}
+          <div className="clean-tri-grid">
+            <div className="clean-tri-item">
+              <img src="/assets/images/doha-desert-safari.jpg" alt="Doha golden desert dunes" loading="lazy" />
+            </div>
+            <div className="clean-tri-item">
+              <img src="/assets/images/zanzibar-beach.jpg" alt="Zanzibar white sand beach" loading="lazy" />
+            </div>
+            <div className="clean-tri-item">
+              <img src="/assets/images/doha-skyline.jpg" alt="Doha futuristic waterfront skyline" loading="lazy" />
+            </div>
+          </div>
+
+          {/* Bottom Prompt + CTA */}
+          <div className="clean-bottom-cta-row">
+            <p className="clean-prompt-text">
+              Would you like to explore exclusive itineraries or customize this trip for your group?
+            </p>
+
+            <button 
+              type="button" 
+              className="clean-pill-btn"
+              onClick={() => scrollTo('booking-desk')}
+            >
+              <span>Reserve Your Slot</span>
+              <span className="clean-pill-arrow">↗</span>
+            </button>
+          </div>
+
+        </div>
+      </section>
+    </div>
   );
 }

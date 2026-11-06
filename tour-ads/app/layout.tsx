@@ -58,9 +58,6 @@ export default function RootLayout({
         <link rel="preload" as="image" href="/assets/images/doha-skyline.jpg" fetchPriority="high" />
       </head>
       <body>
-        <a href="#booking-desk" className="tour-sr-only">
-          Skip to reservation desk
-        </a>
         {children}
       </body>
     </html>

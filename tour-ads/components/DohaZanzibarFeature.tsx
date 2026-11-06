@@ -28,10 +28,10 @@ export default function DohaZanzibarFeature({ onSelectPackage }: DohaZanzibarFea
             Dual Destination Flagship · Dec 12–19, 2026
           </div>
           <h2 className="tour-editorial-heading">
-            From the energy of Doha to the shores of Zanzibar<span style={{ color: '#0080E8' }}>.</span>
+            Doha City &amp; Zanzibar Island Escape<span style={{ color: '#0080E8' }}>.</span>
           </h2>
           <p className="tour-editorial-sub">
-            A seven-night luxury escape curated to seamlessly bridge two distinct worlds. Begin amidst the bold geometric architecture and rich Arabian desert of Qatar, then fly south with Qatar Airways to unwind along the white sand reefs and spice heritage of Zanzibar.
+            7 Nights · Dec 12–19, 2026 · <strong>₦4,350,000</strong> per person sharing. All flights, 5-star hotels, visas, desert safari &amp; beachfront villa included.
           </p>
         </div>
 

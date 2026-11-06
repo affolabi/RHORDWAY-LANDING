@@ -1,15 +1,82 @@
 'use client';
 
-import React from 'react';
-import { tourPackagesData } from '../config/tourPackages';
+import React, { useState, useEffect, useRef } from 'react';
+import { siteConfig } from '../config/siteConfig';
 
-interface TourCampaignHeroProps {
-  onSelectPackage?: (packageId: string) => void;
+interface HeroSlide {
+  image: string;
+  tag: string;
+  headline: string;
+  subheadline: string;
+  alt: string;
 }
 
-export default function TourCampaignHero({ onSelectPackage }: TourCampaignHeroProps) {
-  const pkgDZ = tourPackagesData['doha-zanzibar'];
-  const pkgGP = tourPackagesData['doha-grand-prix'];
+const heroSlides: HeroSlide[] = [
+  {
+    image: '/assets/images/doha-skyline.jpg',
+    tag: 'Doha, Qatar · 5-Star Modern Architecture',
+    headline: 'Extraordinary Escapes.',
+    subheadline: 'Two exclusive 2026 holiday packages curated with 5-star luxury, international flights, visa processing, and VIP excursions.',
+    alt: 'Doha futuristic illuminated skyline across the Arabian Gulf'
+  },
+  {
+    image: '/assets/images/zanzibar-beach.jpg',
+    tag: 'Zanzibar, Tanzania · Turquoise Coral Reefs',
+    headline: 'Untouched Tropical Luxury.',
+    subheadline: 'All-inclusive beachfront resort luxury, private Mnemba atoll dolphin excursions, and Stone Town heritage tours.',
+    alt: 'Zanzibar pristine turquoise beach with private beachfront loungers'
+  },
+  {
+    image: '/assets/images/doha-f1-grand-prix.jpg',
+    tag: 'Lusail Circuit, Doha · Formula 1 Grand Prix',
+    headline: 'Pure Motorsport Prestige.',
+    subheadline: 'Full 3-day Formula 1 race weekend access under floodlights, 5-star Doha accommodation, and desert safari dune bashing.',
+    alt: 'Formula 1 racing under night lights at Lusail International Circuit'
+  },
+  {
+    image: '/assets/images/doha-desert-safari.jpg',
+    tag: 'Inland Sea · Golden Desert Safari',
+    headline: 'Golden Sunset Adventures.',
+    subheadline: 'Private 4x4 dune bashing across golden Arabian dunes, camel riding, and dinner by the inland sea.',
+    alt: 'Private luxury desert safari 4x4 dune bashing at sunset'
+  },
+  {
+    image: '/assets/images/zanzibar-mnemba.jpg',
+    tag: 'Mnemba Atoll · Crystal Marine Reserve',
+    headline: 'Crystal Lagoon Safaris.',
+    subheadline: 'Private boat charters, swimming alongside wild dolphins, and vibrant snorkeling on private coral atolls.',
+    alt: 'Crystal clear turquoise waters at Mnemba Island Zanzibar'
+  }
+];
+
+export default function TourCampaignHero() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const slideCount = heroSlides.length;
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slideCount);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slideCount) % slideCount);
+  };
+
+  const goToSlide = (idx: number) => {
+    setCurrentSlide(idx);
+  };
+
+  useEffect(() => {
+    if (isPaused) return;
+    timerRef.current = setInterval(() => {
+      nextSlide();
+    }, 5500);
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [currentSlide, isPaused]);
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -18,34 +85,52 @@ export default function TourCampaignHero({ onSelectPackage }: TourCampaignHeroPr
     }
   };
 
+  const slide = heroSlides[currentSlide];
+
   return (
-    <section className="tour-hero-section" id="hero">
-      {/* Background with Ambient Overlay */}
+    <section 
+      className="tour-hero-section tour-slider-hero" 
+      id="hero"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      aria-label="Rhordway 2026 Tour Offers Carousel"
+    >
+      {/* Background Slides with Crossfade */}
       <div className="tour-hero-backdrop">
-        <img 
-          src="/assets/images/hero-reference-bridge.jpg" 
-          alt="Luxury travel at dawn — Rhordway exclusive holiday departures" 
-          className="tour-hero-bg-img"
-          fetchPriority="high"
-        />
+        {heroSlides.map((s, idx) => (
+          <div
+            key={s.image}
+            className={`tour-hero-slide ${idx === currentSlide ? 'active' : ''}`}
+            aria-hidden={idx !== currentSlide}
+          >
+            <img
+              src={s.image}
+              alt={s.alt}
+              className="tour-hero-bg-img"
+              loading={idx === 0 ? 'eager' : 'lazy'}
+              fetchPriority={idx === 0 ? 'high' : 'auto'}
+            />
+          </div>
+        ))}
         <div className="tour-hero-scrim"></div>
       </div>
 
       <div className="tour-container tour-hero-inner">
-        {/* Top Text Content */}
+        {/* Uncluttered, Punchy Hero Text */}
         <div className="tour-hero-content anim-reveal-hero">
+          
           <div className="tour-eyebrow-pill">
-            <span className="tour-blue-dot"></span>
-            Exclusive 2026 Holiday Departures
+            <span className="pulse-blue-dot"></span>
+            Exclusive 2026 Tour Offers
           </div>
 
           <h1 className="tour-hero-title">
-            Two Destinations.<br />
-            <span className="tour-title-soft">One Extraordinary Escape.</span>
+            {slide.headline}<br />
+            <span className="tour-title-soft">Curated by Rhordway.</span>
           </h1>
 
           <p className="tour-hero-lead">
-            From Doha's striking geometric skyline to Zanzibar's turquoise coral shores, discover two unforgettable luxury journeys curated by Rhordway.
+            {slide.subheadline}
           </p>
 
           <div className="tour-hero-cta-group">
@@ -54,70 +139,69 @@ export default function TourCampaignHero({ onSelectPackage }: TourCampaignHeroPr
               className="tour-btn-primary"
               onClick={() => scrollTo('experiences')}
             >
-              <span>Explore the Experiences</span>
+              <span>View Exclusive Offers</span>
               <span className="tour-btn-circle" aria-hidden="true">↓</span>
             </button>
 
-            <button 
-              type="button" 
+            <a 
+              href={`https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent('Hello Rhordway, I am interested in reserving a slot for your 2026 Holiday Tours (Doha + Zanzibar / Doha Grand Prix). Please provide more details.')}`}
               className="tour-btn-glass"
-              onClick={() => scrollTo('booking-collation')}
+              target="_blank" 
+              rel="noopener noreferrer"
             >
-              <span>Speak to a Travel Consultant</span>
+              <span>Chat on WhatsApp</span>
               <span className="tour-btn-circle" aria-hidden="true">↗</span>
-            </button>
+            </a>
           </div>
+
         </div>
 
-        {/* 2 Featured Holiday Package Cards in Hero */}
-        <div className="tour-hero-cards-grid anim-reveal-cards">
-          {/* Package 1: Doha + Zanzibar */}
-          <article 
-            className="tour-hero-card"
-            onClick={() => {
-              if (onSelectPackage) onSelectPackage('doha-zanzibar');
-              scrollTo('doha-zanzibar');
-            }}
-          >
-            <div className="tour-card-top-tag">
-              <span className="tour-card-badge">{pkgDZ.dates}</span>
-              <span className="tour-card-nights">{pkgDZ.durationLabel}</span>
-            </div>
-            <h3 className="tour-card-title">{pkgDZ.title}</h3>
-            <p className="tour-card-desc">{pkgDZ.destinationBreakdown}</p>
-            <div className="tour-card-price-row">
-              <span className="tour-card-price">{pkgDZ.pricing.standardFormatted}</span>
-              <span className="tour-card-occupancy">{pkgDZ.pricing.occupancyTerms}</span>
-            </div>
-            <div className="tour-card-footer">
-              <span className="tour-card-link">View Itinerary Details &rarr;</span>
-              <span className="tour-card-arrow-circle">↗</span>
-            </div>
-          </article>
+        {/* Floating Slide Location Pill */}
+        <div className="tour-slider-meta-tag">
+          <span className="meta-pin">📍</span>
+          <span>{slide.tag}</span>
+        </div>
 
-          {/* Package 2: Doha Grand Prix */}
-          <article 
-            className="tour-hero-card grand-prix-card"
-            onClick={() => {
-              if (onSelectPackage) onSelectPackage('doha-grand-prix');
-              scrollTo('doha-grand-prix');
-            }}
-          >
-            <div className="tour-card-top-tag">
-              <span className="tour-card-badge f1-badge">{pkgGP.dates}</span>
-              <span className="tour-card-nights">{pkgGP.durationLabel}</span>
-            </div>
-            <h3 className="tour-card-title">{pkgGP.title}</h3>
-            <p className="tour-card-desc">{pkgGP.destinationBreakdown}</p>
-            <div className="tour-card-price-row">
-              <span className="tour-card-price">{pkgGP.pricing.standardFormatted}</span>
-              <span className="tour-card-occupancy">per person on double occupancy</span>
-            </div>
-            <div className="tour-card-footer">
-              <span className="tour-card-link">View Race Weekend &rarr;</span>
-              <span className="tour-card-arrow-circle">↗</span>
-            </div>
-          </article>
+        {/* Slider Navigation Bar */}
+        <div className="tour-slider-controls">
+          <div className="tour-slider-nav-btns">
+            <button 
+              type="button" 
+              className="tour-slide-btn" 
+              onClick={prevSlide}
+              aria-label="Previous slide"
+            >
+              ‹
+            </button>
+            <button 
+              type="button" 
+              className="tour-slide-btn" 
+              onClick={nextSlide}
+              aria-label="Next slide"
+            >
+              ›
+            </button>
+          </div>
+
+          {/* Dots Indicator */}
+          <div className="tour-slide-dots">
+            {heroSlides.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                className={`tour-slide-dot ${idx === currentSlide ? 'active' : ''}`}
+                onClick={() => goToSlide(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Slide Counter */}
+          <div className="tour-slide-counter">
+            <span className="current-num">0{currentSlide + 1}</span>
+            <span className="slash">/</span>
+            <span className="total-num">0{slideCount}</span>
+          </div>
         </div>
 
         {/* Bottom Trust Ribbon */}
@@ -126,9 +210,9 @@ export default function TourCampaignHero({ onSelectPackage }: TourCampaignHeroPr
           <span className="ribbon-sep">·</span>
           <span>✓ 5-STAR LUXURY ACCOMMODATION</span>
           <span className="ribbon-sep">·</span>
-          <span>✓ EMBASSY VISAS &amp; INSURANCE HANDLED</span>
+          <span>✓ VISAS &amp; TRAVEL INSURANCE</span>
           <span className="ribbon-sep">·</span>
-          <span>✓ PRIVATE AIRPORT TRANSFERS</span>
+          <span>✓ PRIVATE VIP AIRPORT TRANSFERS</span>
         </div>
       </div>
     </section>

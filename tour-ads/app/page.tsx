@@ -6,6 +6,7 @@ import TourCampaignHero from '../components/TourCampaignHero';
 import TourExperienceSelector from '../components/TourExperienceSelector';
 import DohaZanzibarFeature from '../components/DohaZanzibarFeature';
 import GrandPrixFeature from '../components/GrandPrixFeature';
+import TourReviews from '../components/TourReviews';
 import ActivityGallery from '../components/ActivityGallery';
 import TravelConfidence from '../components/TravelConfidence';
 import BookingSteps from '../components/BookingSteps';
@@ -36,37 +37,40 @@ export default function TourAdsPage() {
       <TourSiteHeader />
 
       <main id="tour-main-content">
-        {/* 1. Hero Campaign Banner with Departure Cards */}
-        <TourCampaignHero onSelectPackage={handleSelectPackage} />
+        {/* 1. Uncluttered Hero Image Slider */}
+        <TourCampaignHero />
 
-        {/* 2. Package Selector & Side-by-Side Comparison */}
+        {/* 2. Top Offer Showcase (Doha+Zanzibar & Grand Prix) */}
         <TourExperienceSelector onSelectPackage={handleSelectPackage} />
 
-        {/* 3. Deep Dive: Doha + Zanzibar 7-Night Dual Escape */}
+        {/* 3. Deep Dive Itinerary: Doha + Zanzibar 7-Night Dual Escape */}
         <DohaZanzibarFeature onSelectPackage={handleSelectPackage} />
 
-        {/* 4. Deep Dive: Doha Grand Prix Formula 1 Race Weekend */}
+        {/* 4. Deep Dive Itinerary: Doha Grand Prix Formula 1 Race Weekend */}
         <GrandPrixFeature onSelectPackage={handleSelectPackage} />
 
-        {/* 5. Asymmetric Excursion & Activity Mosaic */}
+        {/* 5. Verified Client Reviews & Testimonials */}
+        <TourReviews />
+
+        {/* 6. Asymmetric Excursion & Activity Photo Mosaic */}
         <ActivityGallery />
 
-        {/* 6. Rhordway Travel Confidence Pillars */}
+        {/* 7. Rhordway Travel Confidence Pillars */}
         <TravelConfidence />
 
-        {/* 7. 3-Step Transparent Booking Flow */}
+        {/* 8. 3-Step Reservation Process */}
         <BookingSteps />
 
-        {/* 8. Interactive Collation Desk: Pricing, PDF Dossier & WhatsApp Dispatch */}
+        {/* 9. Interactive Collation Desk: Instant Pricing, PDF Dossier & WhatsApp Dispatch */}
         <TourCollationDesk
           initialPackageId={selectedPackageId}
           initialOccupancy={selectedOccupancy}
         />
 
-        {/* 9. Frequently Asked Questions */}
+        {/* 10. Frequently Asked Questions */}
         <TourFAQ />
 
-        {/* 10. Final Call to Action */}
+        {/* 11. Final High-Impact CTA */}
         <TourFinalCTA />
       </main>
 

@@ -113,7 +113,7 @@ export default function TourCollationDesk({
   };
 
   return (
-    <section className="tour-section collation-section-main" id="booking-collation">
+    <section className="tour-section collation-section-main" id="booking-desk">
       <div className="tour-container">
         
         {/* Header */}

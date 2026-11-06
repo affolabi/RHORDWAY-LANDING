@@ -35,10 +35,10 @@ export default function GrandPrixFeature({ onSelectPackage }: GrandPrixFeaturePr
             Formula 1 Qatar Grand Prix · Nov 25 – Dec 1, 2026
           </div>
           <h2 className="tour-editorial-heading">
-            Experience Doha beyond the ordinary<span style={{ color: '#E52E2E' }}>.</span>
+            Doha Formula 1 Grand Prix Weekend<span style={{ color: '#E52E2E' }}>.</span>
           </h2>
           <p className="tour-editorial-sub">
-            Immerse yourself in 6 nights of 5-star hospitality, cultural museum exploration, and the heart-pounding spectacle of the Formula 1 Qatar Airways Qatar Grand Prix under the Lusail International Circuit floodlights.
+            6 Nights · Nov 25 – Dec 1, 2026 · From <strong>₦3,400,000</strong>. 3-day Lusail Circuit tickets, 5-star hotel, return flights, visa &amp; private transfers included.
           </p>
         </div>
 
