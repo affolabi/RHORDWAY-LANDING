@@ -4,10 +4,8 @@ import React, { useState } from 'react';
 import TourSiteHeader from '../components/TourSiteHeader';
 import TourCampaignHero from '../components/TourCampaignHero';
 import TourExperienceSelector from '../components/TourExperienceSelector';
-import DohaZanzibarFeature from '../components/DohaZanzibarFeature';
-import GrandPrixFeature from '../components/GrandPrixFeature';
+import TravelerMomentsCarousel from '../components/TravelerMomentsCarousel';
 import TourReviews from '../components/TourReviews';
-import ActivityGallery from '../components/ActivityGallery';
 import TravelConfidence from '../components/TravelConfidence';
 import BookingSteps from '../components/BookingSteps';
 import TourCollationDesk from '../components/TourCollationDesk';
@@ -15,12 +13,14 @@ import TourFAQ from '../components/TourFAQ';
 import TourFinalCTA from '../components/TourFinalCTA';
 import TourSiteFooter from '../components/TourSiteFooter';
 import TourScrollObserver from '../components/TourScrollObserver';
+import TourDetailModal from '../components/TourDetailModal';
 
 export default function TourAdsPage() {
   const [selectedPackageId, setSelectedPackageId] = useState<string>('doha-zanzibar');
   const [selectedOccupancy, setSelectedOccupancy] = useState<string>('double');
+  const [modalPackageId, setModalPackageId] = useState<string | null>(null);
 
-  const handleSelectPackage = (pkgId: string, occupancy?: string) => {
+  const handleSelectPackageForBooking = (pkgId: string, occupancy?: string) => {
     setSelectedPackageId(pkgId);
     if (occupancy) {
       setSelectedOccupancy(occupancy);
@@ -31,50 +31,62 @@ export default function TourAdsPage() {
     }
   };
 
+  const handleOpenTourDetails = (pkgId: string) => {
+    setModalPackageId(pkgId);
+  };
+
+  const handleCloseModal = () => {
+    setModalPackageId(null);
+  };
+
   return (
     <div className="tour-app-wrapper">
       <TourScrollObserver />
       <TourSiteHeader />
 
       <main id="tour-main-content">
-        {/* 1. Uncluttered Hero Image Slider */}
+        {/* 1. Fast 800ms Holiday Hero Slider with Restored Copy */}
         <TourCampaignHero />
 
-        {/* 2. Top Offer Showcase (Doha+Zanzibar & Grand Prix) */}
-        <TourExperienceSelector onSelectPackage={handleSelectPackage} />
+        {/* 2. "Our Tours" Clean Showcase - Click opens TourDetailModal */}
+        <TourExperienceSelector 
+          onOpenDetails={handleOpenTourDetails}
+          onSelectPackage={handleSelectPackageForBooking} 
+        />
 
-        {/* 3. Deep Dive Itinerary: Doha + Zanzibar 7-Night Dual Escape */}
-        <DohaZanzibarFeature onSelectPackage={handleSelectPackage} />
+        {/* 3. "Through Our Lens" Interactive People & Video Moments Carousel */}
+        <TravelerMomentsCarousel />
 
-        {/* 4. Deep Dive Itinerary: Doha Grand Prix Formula 1 Race Weekend */}
-        <GrandPrixFeature onSelectPackage={handleSelectPackage} />
-
-        {/* 5. Verified Client Reviews & Testimonials */}
+        {/* 4. Compact, Space-Minimized Reviews Carousel */}
         <TourReviews />
 
-        {/* 6. Asymmetric Excursion & Activity Photo Mosaic */}
-        <ActivityGallery />
-
-        {/* 7. Rhordway Travel Confidence Pillars */}
+        {/* 5. Confidence Pillars */}
         <TravelConfidence />
 
-        {/* 8. 3-Step Reservation Process */}
+        {/* 6. Simple 3-Step Process */}
         <BookingSteps />
 
-        {/* 9. Interactive Collation Desk: Instant Pricing, PDF Dossier & WhatsApp Dispatch */}
+        {/* 7. Collation Desk: Instant Pricing, PDF Dossier & WhatsApp Dispatch */}
         <TourCollationDesk
           initialPackageId={selectedPackageId}
           initialOccupancy={selectedOccupancy}
         />
 
-        {/* 10. Frequently Asked Questions */}
+        {/* 8. Frequently Asked Questions */}
         <TourFAQ />
 
-        {/* 11. Final High-Impact CTA */}
+        {/* 9. Final CTA */}
         <TourFinalCTA />
       </main>
 
       <TourSiteFooter />
+
+      {/* Interactive Tour Detail Modal (No clutter on homepage) */}
+      <TourDetailModal
+        packageId={modalPackageId}
+        onClose={handleCloseModal}
+        onSelectForBooking={handleSelectPackageForBooking}
+      />
     </div>
   );
 }

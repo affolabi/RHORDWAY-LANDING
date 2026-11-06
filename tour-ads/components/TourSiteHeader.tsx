@@ -34,11 +34,8 @@ export default function TourSiteHeader() {
             <button type="button" onClick={() => scrollTo('experiences')} className="tour-nav-btn">
               Offers
             </button>
-            <button type="button" onClick={() => scrollTo('doha-zanzibar')} className="tour-nav-btn">
-              Doha + Zanzibar
-            </button>
-            <button type="button" onClick={() => scrollTo('doha-grand-prix')} className="tour-nav-btn">
-              Doha Grand Prix
+            <button type="button" onClick={() => scrollTo('moments')} className="tour-nav-btn">
+              Through Our Lens
             </button>
             <button type="button" onClick={() => scrollTo('reviews')} className="tour-nav-btn">
               Reviews
@@ -53,7 +50,7 @@ export default function TourSiteHeader() {
             <button 
               type="button" 
               className="tour-header-cta"
-              onClick={() => scrollTo('booking-collation')}
+              onClick={() => scrollTo('booking-desk')}
             >
               <span>Book a Slot</span>
               <span className="tour-cta-arrow" aria-hidden="true">↗</span>
@@ -89,13 +86,10 @@ export default function TourSiteHeader() {
           </div>
           <nav className="tour-mobile-nav">
             <button type="button" onClick={() => scrollTo('experiences')} className="tour-mobile-link">
-              Exclusive 2026 Offers
+              2026 Holiday Offers
             </button>
-            <button type="button" onClick={() => scrollTo('doha-zanzibar')} className="tour-mobile-link">
-              Doha + Zanzibar (₦4.35M)
-            </button>
-            <button type="button" onClick={() => scrollTo('doha-grand-prix')} className="tour-mobile-link">
-              Doha Grand Prix F1 (₦3.4M)
+            <button type="button" onClick={() => scrollTo('moments')} className="tour-mobile-link">
+              Through Our Lens (Videos &amp; Photos)
             </button>
             <button type="button" onClick={() => scrollTo('reviews')} className="tour-mobile-link">
               Traveller Reviews ★★★★★
@@ -108,7 +102,7 @@ export default function TourSiteHeader() {
             <button 
               type="button" 
               className="tour-drawer-cta"
-              onClick={() => scrollTo('booking-collation')}
+              onClick={() => scrollTo('booking-desk')}
             >
               Reserve Your Holiday Slot ↗
             </button>
