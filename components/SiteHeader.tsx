@@ -10,6 +10,10 @@ export default function SiteHeader() {
   const pathname = usePathname();
   const { isMobileMenuOpen, toggleMobileMenu, closeMobileMenu, scrollToConsultation } = useApp();
 
+  if (pathname?.startsWith('/tour-ads')) {
+    return null;
+  }
+
   const navItems = [
     { label: 'Home', href: '/' },
     { label: 'About', href: '/about' },

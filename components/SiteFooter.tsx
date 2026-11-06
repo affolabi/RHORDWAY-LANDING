@@ -2,11 +2,17 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { siteConfig } from '../config/siteConfig';
 import { useApp } from '../context/AppContext';
 
 export default function SiteFooter() {
+  const pathname = usePathname();
   const { scrollToConsultation, selectServiceAndScroll } = useApp();
+
+  if (pathname?.startsWith('/tour-ads')) {
+    return null;
+  }
 
   return (
     <footer className="ref-footer">

@@ -1,0 +1,23 @@
+{
+  "name": "rhordway-tour-ads",
+  "version": "1.0.0",
+  "description": "Rhordway Official Tour Ads Campaign Landing Page (Doha + Zanzibar & Doha Grand Prix 2026)",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^14.2.15",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "jspdf": "^2.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.4.0"
+  }
+}
