@@ -1,99 +1,92 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
-interface EditorialDispatch {
+interface MediaMoment {
   id: string;
-  category: 'desert' | 'zanzibar' | 'f1';
-  plateNo: string;
   type: 'video' | 'photo';
-  headline: string;
-  subheadline: string;
-  caption: string;
+  title: string;
   location: string;
-  travellers: string;
+  tag: string;
+  traveller: string;
   image: string;
   videoUrl?: string;
-  aspect: 'cinema' | 'portrait' | 'landscape';
 }
 
-const dispatches: EditorialDispatch[] = [
+const mediaMoments: MediaMoment[] = [
   {
-    id: 'dispatch-1',
-    category: 'desert',
-    plateNo: 'PLATE 01 · DOHA DESERT',
+    id: 'm-1',
     type: 'video',
-    headline: 'Golden Hour Traversal',
-    subheadline: 'Khor Al Adaid Inland Sea',
-    caption: 'Private 4x4 convoy navigating the golden dunes where desert meets the ocean at sunset.',
-    location: 'Inland Sea, Qatar',
-    travellers: 'Tunde, Folake & crew · Lagos',
+    title: 'Sunset Dune Bashing in 4x4 Convoy',
+    location: 'Inland Sea, Doha Desert',
+    tag: '📹 Video Highlight',
+    traveller: 'Tunde, Folake & crew · Lagos',
     image: '/assets/images/doha-desert-safari.jpg',
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-driving-a-4x4-vehicle-through-the-desert-dunes-43282-large.mp4',
-    aspect: 'cinema'
+    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-driving-a-4x4-vehicle-through-the-desert-dunes-43282-large.mp4'
   },
   {
-    id: 'dispatch-2',
-    category: 'zanzibar',
-    plateNo: 'PLATE 02 · KENDWA COAST',
+    id: 'm-2',
     type: 'photo',
-    headline: 'The Turquoise Coastline',
-    subheadline: 'All-Inclusive Beachfront Villa',
-    caption: 'Waking up to the Indian Ocean reef. Unfiltered coral shades and gentle coastal dhows.',
+    title: 'Turquoise Shores & Beachfront Villa',
     location: 'Kendwa Beach, Zanzibar',
-    travellers: 'Folake & Tunde · Honeymoon Cohort',
-    image: '/assets/images/zanzibar-beach.jpg',
-    aspect: 'portrait'
+    tag: '📸 Coastal Luxury',
+    traveller: 'Folake & Tunde · Honeymooners',
+    image: '/assets/images/zanzibar-beach.jpg'
   },
   {
-    id: 'dispatch-3',
-    category: 'f1',
-    plateNo: 'PLATE 03 · LUSAIL CIRCUIT',
+    id: 'm-3',
     type: 'video',
-    headline: 'Formula 1 Night Racing',
-    subheadline: '330 km/h Under 1,000 Floodlights',
-    caption: 'The raw roar and atmosphere as the world champions battle through turns 1 to 4 on race night.',
+    title: 'Formula 1 Night Race at Lusail Circuit',
     location: 'Lusail Circuit, Doha',
-    travellers: 'Engr. Chinedu & group · Abuja',
+    tag: '📹 F1 Grand Prix',
+    traveller: 'Engr. Chinedu & group · Abuja',
     image: '/assets/images/doha-f1-grand-prix.jpg',
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-sports-car-racing-on-a-track-40342-large.mp4',
-    aspect: 'cinema'
+    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-sports-car-racing-on-a-track-40342-large.mp4'
   },
   {
-    id: 'dispatch-4',
-    category: 'zanzibar',
-    plateNo: 'PLATE 04 · MNEMBA ATOLL',
+    id: 'm-4',
     type: 'photo',
-    headline: 'Wild Dolphin Encounter',
-    subheadline: 'Protected Coral Marine Reserve',
-    caption: 'Swimming alongside wild pods of spinner dolphins in crystal-clear visibility at dawn.',
-    location: 'Mnemba Island, Zanzibar',
-    travellers: 'Dr. Kemi Balogun & family · Port Harcourt',
-    image: '/assets/images/zanzibar-mnemba.jpg',
-    aspect: 'landscape'
+    title: 'Swimming with Wild Dolphins',
+    location: 'Mnemba Island Coral Atoll',
+    tag: '🌊 Marine Safari',
+    traveller: 'Dr. Kemi & family · Port Harcourt',
+    image: '/assets/images/zanzibar-mnemba.jpg'
   },
   {
-    id: 'dispatch-5',
-    category: 'zanzibar',
-    plateNo: 'PLATE 05 · STONE TOWN',
+    id: 'm-5',
     type: 'photo',
-    headline: 'Antique Omani Heritage',
-    subheadline: 'Historic Spice Alleys',
-    caption: 'Centuries of Swahili, Arab, and Indian culture preserved within intricately carved teak portals.',
+    title: 'Stone Town Spice Route & Heritage',
     location: 'Stone Town, Zanzibar',
-    travellers: 'Amina & Zainab Yusuf · Abuja',
-    image: '/assets/images/zanzibar-stone-town.jpg',
-    aspect: 'landscape'
+    tag: '📸 Culture Walk',
+    traveller: 'Amina & Zainab · Abuja',
+    image: '/assets/images/zanzibar-stone-town.jpg'
+  },
+  {
+    id: 'm-6',
+    type: 'photo',
+    title: 'Giant Aldabra Tortoise Sanctuary',
+    location: 'Prison Island, Zanzibar',
+    tag: '🐢 Wildlife Sanctuary',
+    traveller: 'Rhordway holiday cohort',
+    image: '/assets/images/zanzibar-turtles.jpg'
   }
 ];
 
 export default function TravelerMomentsCarousel() {
-  const [activeCategory, setActiveCategory] = useState<'all' | 'desert' | 'zanzibar' | 'f1'>('all');
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
 
-  const filteredDispatches = activeCategory === 'all'
-    ? dispatches
-    : dispatches.filter((d) => d.category === activeCategory);
+  const scrollLeft = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: -360, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: 360, behavior: 'smooth' });
+    }
+  };
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -102,161 +95,94 @@ export default function TravelerMomentsCarousel() {
     }
   };
 
-  const featurePlate = filteredDispatches[0] || dispatches[0];
-  const sidePlates = filteredDispatches.slice(1);
-
   return (
-    <section className="magazine-editorial-section" id="moments">
-      <div className="magazine-container">
+    <section className="clean-section clean-moments-section" id="moments">
+      <div className="clean-inner">
         
-        {/* Magazine Masthead & Header */}
-        <div className="magazine-masthead">
-          <div className="masthead-top-rule">
-            <span className="masthead-vol">THE RHORDWAY JOURNAL · VOL. 26</span>
-            <span className="masthead-center">THROUGH OUR LENS</span>
-            <span className="masthead-date">2026 FIELD DISPATCHES</span>
-          </div>
-
-          <div className="magazine-title-block">
-            <h2 className="magazine-main-title">
-              Real Travellers. <span className="serif-italic">Unfiltered Moments.</span>
+        {/* Section Header Row */}
+        <div className="clean-header-row">
+          <div>
+            <span className="clean-tag">Through Our Lens</span>
+            <h2 className="clean-title">
+              Real travellers.<br />
+              Unfiltered moments.
             </h2>
-            <p className="magazine-editorial-lede">
-              A curated photographic &amp; cinematic chronicle of guests who journeyed with Rhordway across the Arabian dunes of Qatar, the turquoise coral reefs of Zanzibar, and the high-speed theatre of Formula 1.
+            <p className="clean-subtitle">
+              Authentic highlights from guests who travelled with Rhordway across Doha, Zanzibar, and the Grand Prix.
             </p>
           </div>
 
-          {/* Magazine Category Pills */}
-          <div className="magazine-chapter-pills">
-            <button
-              type="button"
-              className={`chapter-btn ${activeCategory === 'all' ? 'active' : ''}`}
-              onClick={() => setActiveCategory('all')}
+          <div className="clean-carousel-nav">
+            <button 
+              type="button" 
+              className="clean-carousel-arrow" 
+              onClick={scrollLeft}
+              aria-label="Scroll left"
             >
-              All Dispatches (05)
+              ‹
             </button>
-            <button
-              type="button"
-              className={`chapter-btn ${activeCategory === 'desert' ? 'active' : ''}`}
-              onClick={() => setActiveCategory('desert')}
+            <button 
+              type="button" 
+              className="clean-carousel-arrow" 
+              onClick={scrollRight}
+              aria-label="Scroll right"
             >
-              Doha Desert Safari
-            </button>
-            <button
-              type="button"
-              className={`chapter-btn ${activeCategory === 'zanzibar' ? 'active' : ''}`}
-              onClick={() => setActiveCategory('zanzibar')}
-            >
-              Zanzibar Reef &amp; Coast
-            </button>
-            <button
-              type="button"
-              className={`chapter-btn ${activeCategory === 'f1' ? 'active' : ''}`}
-              onClick={() => setActiveCategory('f1')}
-            >
-              Formula 1 Grand Prix
+              ›
             </button>
           </div>
         </div>
 
-        {/* Magazine Cinematic Bento Layout */}
-        <div className="magazine-bento-spread">
-          
-          {/* Main Cinematic Feature Frame (Left / Large) */}
-          <div 
-            className="magazine-hero-plate"
-            onClick={() => {
-              if (featurePlate.type === 'video' && featurePlate.videoUrl) {
-                setActiveVideo(featurePlate.videoUrl);
-              }
-            }}
-          >
-            <div className="cinema-frame-wrap">
-              <img src={featurePlate.image} alt={featurePlate.headline} />
-              
-              {/* Cinematic Letterbox & Film Brackets */}
-              <div className="cinema-viewfinder-brackets">
-                <span className="bracket tl"></span>
-                <span className="bracket tr"></span>
-                <span className="bracket bl"></span>
-                <span className="bracket br"></span>
-              </div>
+        {/* Horizontal Moments Carousel */}
+        <div className="clean-moments-scroll-track" ref={carouselRef}>
+          {mediaMoments.map((item) => (
+            <article 
+              key={item.id} 
+              className="clean-moment-card"
+              onClick={() => {
+                if (item.type === 'video' && item.videoUrl) {
+                  setActiveVideo(item.videoUrl);
+                }
+              }}
+            >
+              <div className="clean-moment-media">
+                <img src={item.image} alt={item.title} loading="lazy" />
+                <div className="clean-moment-scrim"></div>
 
-              {/* REC / Plate Tag */}
-              <div className="cinema-status-bar">
-                <span className="rec-badge">
-                  {featurePlate.type === 'video' ? '● REC · 4K CINEMA' : '◉ 35MM EXP'}
+                {/* Top Badge */}
+                <span className="clean-moment-badge">
+                  {item.tag}
                 </span>
-                <span className="plate-tag">{featurePlate.plateNo}</span>
-              </div>
 
-              {/* Play Icon if Video */}
-              {featurePlate.type === 'video' && (
-                <div className="cinema-play-button" aria-label="Play video highlight">
-                  <span className="play-triangle">▶</span>
-                  <span className="play-label">WATCH FILM</span>
-                </div>
-              )}
-
-              {/* Editorial Caption Box */}
-              <div className="cinema-caption-scrim">
-                <div className="caption-meta">
-                  <span className="caption-loc">{featurePlate.location}</span>
-                  <span className="caption-user">{featurePlate.travellers}</span>
-                </div>
-                <h3 className="caption-headline">{featurePlate.headline}</h3>
-                <p className="caption-body">{featurePlate.caption}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Secondary Editorial Spread (Right Stack) */}
-          <div className="magazine-side-stack">
-            {sidePlates.map((item) => (
-              <article 
-                key={item.id} 
-                className="magazine-side-card"
-                onClick={() => {
-                  if (item.type === 'video' && item.videoUrl) {
-                    setActiveVideo(item.videoUrl);
-                  }
-                }}
-              >
-                <div className="side-card-media">
-                  <img src={item.image} alt={item.headline} loading="lazy" />
-                  <span className="side-plate-no">{item.plateNo}</span>
-                  {item.type === 'video' && (
-                    <span className="side-video-icon">▶</span>
-                  )}
-                </div>
-
-                <div className="side-card-content">
-                  <div className="side-card-top">
-                    <span className="side-loc">{item.location}</span>
-                    <span className="side-user">{item.travellers}</span>
+                {/* Play Button for Videos */}
+                {item.type === 'video' && (
+                  <div className="clean-play-icon" aria-label="Play video highlight">
+                    ▶
                   </div>
-                  <h4 className="side-headline">{item.headline}</h4>
-                  <p className="side-desc">{item.caption}</p>
-                </div>
-              </article>
-            ))}
-          </div>
+                )}
 
+                {/* Bottom Card Content */}
+                <div className="clean-moment-info">
+                  <span className="clean-moment-loc">{item.location}</span>
+                  <h3 className="clean-moment-title">{item.title}</h3>
+                  <span className="clean-moment-user">{item.traveller}</span>
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
 
-        {/* Magazine Colophon / Footer Action */}
-        <div className="magazine-colophon-bar">
-          <div className="colophon-text">
-            <span className="colophon-title">BEHIND THE CURATION</span>
-            <p>Every group departure is strictly limited to 20 guests to guarantee dedicated concierge service, private excursions, and verified 5-star comfort.</p>
-          </div>
+        {/* Bottom CTA Row */}
+        <div className="clean-bottom-cta-row" style={{ marginTop: '36px' }}>
+          <p className="clean-prompt-text">
+            Ready to experience these breathtaking destinations with a 5-star private group?
+          </p>
 
           <button 
             type="button" 
             className="clean-pill-btn"
             onClick={() => scrollTo('booking-desk')}
           >
-            <span>Reserve Your 2026 Slot</span>
+            <span>Reserve Your Slot</span>
             <span className="clean-pill-arrow">↗</span>
           </button>
         </div>
@@ -271,7 +197,6 @@ export default function TravelerMomentsCarousel() {
               type="button" 
               className="clean-video-modal-close" 
               onClick={() => setActiveVideo(null)}
-              aria-label="Close video player"
             >
               ✕
             </button>
