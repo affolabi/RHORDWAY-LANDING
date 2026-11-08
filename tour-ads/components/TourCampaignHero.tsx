@@ -80,10 +80,6 @@ export default function TourCampaignHero() {
         {/* Restored Original High-Converting Copy */}
         <div className="tour-hero-content anim-reveal-hero">
           
-          <div className="tour-eyebrow-pill">
-            <span className="tour-blue-dot"></span>
-            Exclusive 2026 Holiday Departures
-          </div>
 
           <h1 className="tour-hero-title">
             Two Destinations.<br />
